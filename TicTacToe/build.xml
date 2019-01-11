@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="TicTacToe" default="all" basedir=".">
+	<!-- Import von Einstellungen -->
+	<!-- <property file="${user.home}/build.properties"/> -->
+
+	<!-- Einstellungen für dieses Projekt -->
+	<property name="src.dir" value="src" />
+	<property name="bin.dir" value="${basedir}/build" />
+	<property name="res.dir" value="${basedir}/resources" />
+	
+	<property name="main.class" value="de.unihi.ttt.core.${ant.project.name}" />
+	<property name="jar.dir" value="${bin.dir}/jar" />
+	<property name="jar.filename" value="${ant.project.name}.jar" />
+
+	<!-- Initialisierung  -->
+	<target name="init">
+		<!-- Löscht erzeugte Ordner -->
+		<delete dir="${bin.dir}" />
+
+		<!-- Erstellt benötige Ordner-->
+		<mkdir dir="${bin.dir}" />
+	</target>
+
+	<!-- Kompilierung -->
+	<target name="compile" depends="init">
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" />
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${jar.dir}/${jar.filename}" duplicate="preserve">
+			<fileset dir="${bin.dir}" excludes="**/package-info.class" />
+			<fileset dir="${res.dir}" includes="*" />
+			<manifest>
+				<attribute name="Main-Class" value="${main.class}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="all" description="compile and creates a jar file">
+		<antcall target="jar" />
+	</target>
+	
+</project>
+
+
