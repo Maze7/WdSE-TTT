@@ -22,6 +22,6 @@ public class PlayerSettings {
 	}
 	
 	public PlayerSymbol getSymbol() {
-		return symbol;
+	    return symbol;
 	}
 }

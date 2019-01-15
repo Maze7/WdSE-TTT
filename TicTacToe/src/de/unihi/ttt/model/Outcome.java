@@ -1,7 +1,7 @@
 package de.unihi.ttt.model;
 
 public enum Outcome {
-	DRAW,
+    DRAW,
 	WIN,
 	NOTHING
 }

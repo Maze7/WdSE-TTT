@@ -1,8 +1,5 @@
 /**
  * 
- */
-/**
- * @author Marcel Spark
- *
+ * @author Marcel
  */
 package de.unihi.ttt.model;

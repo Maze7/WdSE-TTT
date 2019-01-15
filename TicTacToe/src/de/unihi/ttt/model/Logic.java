@@ -5,25 +5,26 @@ package de.unihi.ttt.model;
  * @author marcel
  */
 public class Logic {
-	private Player[][] fields = new Player[3][3];
-	private int turnCounter;
-	private static final int ROUND_END = 9;
+    private Player[][] fields = new Player[3][3];
+    private int turnCounter;
+    private static final int ROUND_END = 9;
 	
-	public Logic() {
-		for (int i = 0; i < fields.length; i++) {
-			for (int j = 0; j < fields[i].length; j++) {
-				fields[i][j] = Player.NOBODY;
-			}
-		}
-	}
+    public Logic() {
+        for (int i = 0; i < fields.length; i++) {
+            for (int j = 0; j < fields[i].length; j++) {
+                fields[i][j] = Player.NOBODY;
+            }
+        }
+    }
 	
 	/**
 	 * @param x
 	 * @param y
 	 */
-	public void doTurn(int x, int y) {
+	public boolean doTurn(int x, int y) {
 		turnCounter++;
 		fields[x][y] = whichTurn();
+		return true; // TODO 
 	}
 	
 	public Player whichTurn() {
@@ -63,12 +64,20 @@ public class Logic {
 				&& fields[1][1].equals(fields[2][0]));
 				
 		if (win) {
-			outcomeValue = Outcome.WIN;
+		    outcomeValue = Outcome.WIN;
 		} else if (turnCounter == ROUND_END) {
-			outcomeValue = Outcome.DRAW;
+		    outcomeValue = Outcome.DRAW;
 		} else {
-			outcomeValue = Outcome.NOTHING;
+		    outcomeValue =  Outcome.NOTHING;
 		}
 		return outcomeValue;
+	}
+	
+	/**
+	 * Testing purposes. 
+	 * @return 2D Player array which represents the game field.
+	 */
+	Player[][] getFields() {
+	    return fields;
 	}
 }

@@ -16,7 +16,7 @@ import de.unihi.ttt.model.PlayerSymbol;
  * The Game "TicTacToe".
  */
 public class Game {
-	private static final int WINDOW_SIZE = 500;
+    private static final int WINDOW_SIZE = 500;
     private JFrame window = new JFrame("Tic Tac Toe");
     private Playfield playfield;
     private Logic logic; 
@@ -25,9 +25,9 @@ public class Game {
      * List of {@link PlayerSettings} which contains the two available players in TicTacToe. 
      */
     private static final PlayerSettings PLAYERS[] = { 
-    		new PlayerSettings("O", Player.PLAYER1, PlayerSymbol.O), 
-    		new PlayerSettings("X", Player.PLAYER2, PlayerSymbol.X) 
-    		};
+            new PlayerSettings("O", Player.PLAYER1, PlayerSymbol.O), 
+            new PlayerSettings("X", Player.PLAYER2, PlayerSymbol.X) 
+    };
     
     /**
      * After creation a window is shown where all game elements are displayed. 

@@ -19,7 +19,7 @@ import de.unihi.ttt.model.PlayerSymbol;
 public class Playfield {
     private ImageIcon iconX;
     private ImageIcon iconO;
-    private JButton buttonField[][] = new JButton[3][3];
+    private JButton[][] buttonField = new JButton[3][3];
     
     /**
      * Creates a playfield containing 9x {@link JButton} where all 
