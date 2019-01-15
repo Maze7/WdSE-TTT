@@ -91,7 +91,6 @@ public class LogicTests {
      */
     @Test
     public void testInvalidTurn() {
-        Logic logic = new Logic(); 
         logic.doTurn(0, 0); // player 1
         logic.doTurn(0, 0); // player 2 (invalid turn)
         

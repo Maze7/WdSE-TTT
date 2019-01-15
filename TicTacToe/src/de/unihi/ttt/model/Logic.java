@@ -17,14 +17,14 @@ public class Logic {
         }
     }
 	
-	/**
-	 * @param x
-	 * @param y
-	 */
 	public boolean doTurn(int x, int y) {
 		turnCounter++;
-		fields[x][y] = whichTurn();
-		return true; // TODO 
+		boolean success = false;
+		if (fields[x][y].equals(Player.NOBODY)) {
+		    success = true;
+		    fields[x][y] = whichTurn();
+		}
+		return success;
 	}
 	
 	public Player whichTurn() {
