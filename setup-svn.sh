@@ -31,7 +31,7 @@ function F_configure() {
 	echo "[groups]
 	all = "$1"
 
-	[WdSE-TTT:/]
+	[ttt:/]
 	@all = rw
 	" > /repos/access
 
@@ -45,9 +45,9 @@ function F_configure() {
 		AuthUserFile /repos/auth
 		AuthBasicProvider file
 		Require valid-user
-	</Location>
+</Location>
 	" >> /etc/apache2/mods-enabled/dav_svn.conf
-
+	a2enmod authz_svn
 	systemctl restart apache2 
 	echo $(($? + $SUCCESS)) # exit code of command
 }
