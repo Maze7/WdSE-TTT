@@ -1,46 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="TicTacToe" default="all" basedir=".">
+<project name="TicTacToe" default="all" basedir="." xmlns:cs="antlib:com.puppycrawl.tools.checkstyle.ant">
+
 	<!-- Import von Einstellungen -->
 	<!-- <property file="${user.home}/build.properties"/> -->
-
-	<!-- Einstellungen für dieses Projekt -->
 	<property name="src.dir" value="src" />
-	<property name="bin.dir" value="${basedir}/build" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="bin.dir" value="${build.dir}/bin" />
 	<property name="res.dir" value="${basedir}/resources" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="doc.dir" value="${build.dir}/doc" />
+	<property name="report.dir" value="${build.dir}/reports" />
+	<property name="doc.zip" value="${doc.dir}/${ant.project.name}-javadoc.zip" />
 	
-	<property name="main.class" value="de.unihi.ttt.core.${ant.project.name}" />
-	<property name="jar.dir" value="${bin.dir}/jar" />
+	<property name="test.src.dir" value="tests" />
+	<property name="test.build.dir" value="${build.dir}/tests" />
+
+	<property name="main.class" value="${package}.core.${ant.project.name}" />
+	<property name="jar.dir" value="${build.dir}/jar" />
 	<property name="jar.filename" value="${ant.project.name}.jar" />
 
+	<property name="package" value="de.unihi.ttt" />
+	
+	<!-- PATHS -->
+	<path id="test.path">
+		<pathelement path="${test.src.dir}" />
+		<pathelement path="${test.build.dir}" />
+		<pathelement path="${bin.dir}" />
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+	         classpath="${lib.dir}/checkstyle-8.16-all.jar"/>
+	
 	<!-- Initialisierung  -->
 	<target name="init">
-		<!-- Löscht erzeugte Ordner -->
-		<delete dir="${bin.dir}" />
-
-		<!-- Erstellt benötige Ordner-->
+		<delete dir="${build.dir}" />
+		<mkdir dir="${build.dir}" />
 		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${report.dir}" />
 	</target>
 
+	<target name="init.report">
+		<mkdir dir="${report.dir}" />
+	</target>
+	
 	<!-- Kompilierung -->
-	<target name="compile" depends="init">
-		<javac srcdir="${src.dir}" destdir="${bin.dir}" />
+	<target name="compile.src" depends="init">
+		<javac destdir="${bin.dir}">
+			<src path="${src.dir}" />
+		</javac>
 	</target>
 
-	<target name="jar" depends="compile">
+	<!-- Test Kompilierung -->
+	<target name="compile.test" depends="compile.src">
+		<mkdir dir="${test.build.dir}" />
+		<javac srcdir="${test.src.dir}" destdir="${test.build.dir}">
+			<classpath refid="test.path" />
+		</javac>
+	</target>
+
+	<!-- Create javadoc -->
+	<target name="doc" description="generate documentation">
+		<mkdir dir="${doc.dir}" />
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}" />
+	</target>
+
+	<!-- Javadoc zip archive -->
+	<target name="doc.zip" depends="doc" >
+		<zip destfile="${doc.zip}">
+			<fileset dir="${doc.dir}" includes="*" />
+		</zip>
+	</target>
+
+	<!-- Create jar -->
+	<target name="jar" depends="compile.src, doc.zip">
 		<jar destfile="${jar.dir}/${jar.filename}" duplicate="preserve">
-			<fileset dir="${bin.dir}" excludes="**/package-info.class" />
+			<fileset dir="${build.dir}" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${res.dir}" includes="*" />
+			<fileset file="${doc.zip}"/>
 			<manifest>
 				<attribute name="Main-Class" value="${main.class}" />
 			</manifest>
 		</jar>
 	</target>
-
-	<target name="all" description="compile and creates a jar file">
-		<antcall target="jar" />
+	
+	<!-- checkstyle test -->
+	<target name="checkstyle" depends="init.report" >
+		  <cs:checkstyle config="${basedir}/checkstyle.xml">
+		    <fileset dir="${src.dir}" includes="**/*.java"/>
+		  	<formatter type="plain" tofile="${report.dir}/checkstyle_report.xml"/>
+		  </cs:checkstyle>
 	</target>
 	
+	<!-- Run JUnit -->
+	<target name="junit" depends="compile.test">
+		<junit printsummary="yes" haltonfailure="no" fork="yes">
+			<classpath refid="test.path" />
+			<test name="${package}.TestSuite" haltonfailure="no" todir="${report.dir}">
+				<formatter type="plain" />
+			    <formatter type="brief" usefile="false"/>
+				<formatter type="xml" />
+			</test>
+		  </junit>
+	</target>
+
+	<!-- Summary of all important -->
+	<target name="all" description="compile and creates a jar file">
+		<antcall target="junit" />
+		<antcall target="jar" />
+	</target>
+
+	<target name="jenkins">
+		<antcall target="doc" />
+		<antcall target="jar" />
+		<antcall target="junit" />
+		<antcall target="checkstyle" />
+	</target>
 </project>
 
 
