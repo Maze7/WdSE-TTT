@@ -63,6 +63,9 @@ public class Playfield {
     	return indexValues;
     }
     
+    /**
+     * Disables all buttons of the Playfield's 3x3 grid.
+     */
     void disableButtons() {
         for (int i = 0; i < buttonField.length; i++) {
         	for (JButton field : buttonField[i]) {
@@ -71,6 +74,12 @@ public class Playfield {
         }
     }
     
+    
+    /**
+     * @param x logical x-coordinate of the Button in the 3x3 grid
+     * @param y logical y-coordinate of the Button in the 3x3 grid
+     * @param symbol 
+     */
     void setButtonImage(int x, int y, PlayerSymbol symbol) {
 		buttonField[x][y].setIcon(this.getImage(symbol));
 		buttonField[x][y].setDisabledIcon(this.getImage(symbol));

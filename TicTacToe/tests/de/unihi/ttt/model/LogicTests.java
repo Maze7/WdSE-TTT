@@ -1,6 +1,8 @@
 package de.unihi.ttt.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
@@ -35,8 +37,6 @@ public class LogicTests {
     
     
     private Logic logic;
-    private int[][] moveSet;
-    private Outcome expectedOutcome;
     
     /**
      * Execute a set of moves in 2d game field. 
@@ -96,5 +96,14 @@ public class LogicTests {
         
         Player[][] fields = logic.getFields();
         assertEquals(fields[0][0], Player.PLAYER1);
+    }
+    
+    @Test
+    public void testValidTurnCorrectPlacementInGrid() {
+    	int x = 0;
+    	int y = 0;
+    	Player[][] fields = logic.getFields();
+    	logic.doTurn(x, y);
+    	assertNotEquals("Player at given position should not be NOBODY after a valid turn at this position", Player.NOBODY, fields[x][y]);
     }
 }
