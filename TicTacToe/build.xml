@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="TicTacToe" default="all" basedir="." xmlns:cs="antlib:com.puppycrawl.tools.checkstyle.ant">
+<project name="TicTacToe" default="all" basedir="." xmlns:jacoco="antlib:org.jacoco.ant"
+	xmlns:cs="antlib:com.puppycrawl.tools.checkstyle.ant">
 
 	<!-- Import von Einstellungen -->
 	<!-- <property file="${user.home}/build.properties"/> -->
@@ -11,7 +12,7 @@
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="doc.dir" value="${build.dir}/doc" />
 	<property name="report.dir" value="${build.dir}/reports" />
-	<property name="doc.zip" value="${doc.dir}/${ant.project.name}-javadoc.zip" />
+	<property name="doc.zip" value="${build.dir}/${ant.project.name}-javadoc.zip" />
 	
 	<property name="test.src.dir" value="tests" />
 	<property name="test.build.dir" value="${build.dir}/tests" />
@@ -32,17 +33,28 @@
 		</fileset>
 	</path>
 
+	<!-- load checkstye -->
 	<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
 	         classpath="${lib.dir}/checkstyle-8.16-all.jar"/>
-	
+
+	<!-- load jacoco -->
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+        <classpath path="${lib.dir}/jacocoant.jar"/>
+    </taskdef>
+
 	<!-- Initialisierung  -->
 	<target name="init">
-		<delete dir="${build.dir}" />
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${bin.dir}" />
 		<mkdir dir="${report.dir}" />
 	</target>
 
+	<!-- delete build dir -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+    </target>
+	
+	<!-- init for reports -->
 	<target name="init.report">
 		<mkdir dir="${report.dir}" />
 	</target>
@@ -89,7 +101,7 @@
 	
 	<!-- checkstyle test -->
 	<target name="checkstyle" depends="init.report" >
-		  <cs:checkstyle config="${basedir}/checkstyle.xml">
+		  <cs:checkstyle config="${basedir}/checkstyle.xml" failOnViolation="false">
 		    <fileset dir="${src.dir}" includes="**/*.java"/>
 		  	<formatter type="plain" tofile="${report.dir}/checkstyle_report.xml"/>
 		  </cs:checkstyle>
@@ -97,14 +109,31 @@
 	
 	<!-- Run JUnit -->
 	<target name="junit" depends="compile.test">
-		<junit printsummary="yes" haltonfailure="no" fork="yes">
-			<classpath refid="test.path" />
-			<test name="${package}.TestSuite" haltonfailure="no" todir="${report.dir}">
-				<formatter type="plain" />
-			    <formatter type="brief" usefile="false"/>
-				<formatter type="xml" />
-			</test>
-		  </junit>
+
+		<jacoco:coverage destfile="${build.dir}/jacoco.exec">
+			<junit printsummary="yes" haltonfailure="no" fork="yes">
+				<classpath refid="test.path" />
+				<test name="${package}.TestSuite" haltonfailure="no" todir="${report.dir}">
+					<formatter type="plain" />
+				    <formatter type="brief" usefile="false"/>
+					<formatter type="xml" />
+				</test>
+			</junit>
+		</jacoco:coverage>
+		<jacoco:report>	
+		    <executiondata>
+		        <file file="${build.dir}/jacoco.exec"/>
+		    </executiondata>
+		    <structure name="Tic Tac Toe">
+		        <classfiles>
+		            <fileset dir="${bin.dir}"/>
+		        </classfiles>
+		        <sourcefiles encoding="UTF-8">
+		            <fileset dir="${src.dir}"/>
+		        </sourcefiles>
+		    </structure>
+		    <html destdir="${report.dir}"/>
+		</jacoco:report>
 	</target>
 
 	<!-- Summary of all important -->
