@@ -1,7 +1,6 @@
 package de.unihi.ttt.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -10,26 +9,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
+ * Test class for {@link Logic}.
  * @author marcel
  */
 public class LogicTests {
     /**
-     * Array contains moves, which will result in a draw
+     * Array contains moves, which will result in a draw.
      */
     private static final int[][] DRAW_MOVES = {
             {0, 0}, {0, 1}, {1, 0}, {1, 1}, {0, 2}, {1, 2}, {2, 1}, {2, 0}, {2, 2}
     };
     
     /**
-     * Array contains moves, which will result in a WIN for Player1
+     * Array contains moves, which will result in a WIN for Player1.
      */
     private static final int[][] WIN_MOVES = {
             {0, 0}, {1, 1}, {0, 1}, {2, 2}, {0, 2}
     };
     
     /**
-     * Array contains moves which results not in any game result
+     * Array contains moves which results not in any game result.
      */
     private static final int[][] NOTHING_MOVES = {
             {0, 0}, {1, 1}, {2, 2}
@@ -43,11 +42,11 @@ public class LogicTests {
      * @param moveSet two dimensional array containing a set of moves which should be executed
      */
     private void doTurns(final int[][] moveSet) {
-       boolean sucess = false;
-       for (int[] move : moveSet) {
-           sucess = logic.doTurn(move[0], move[1]);
-           assertTrue("Precondition failed: Move was not successful", sucess);
-       }
+        boolean sucess = false;
+        for (int[] move : moveSet) {
+            sucess = logic.doTurn(move[0], move[1]);
+            assertTrue("Precondition failed: Move was not successful", sucess);
+        }
     }
     
     
@@ -104,6 +103,7 @@ public class LogicTests {
     	int y = 0;
     	Player[][] fields = logic.getFields();
     	logic.doTurn(x, y);
-    	assertNotEquals("Player at given position should not be NOBODY after a valid turn at this position", Player.NOBODY, fields[x][y]);
+    	assertNotEquals("Player at given position should not be NOBODY after a valid turn at this position",
+    	        Player.NOBODY, fields[x][y]);
     }
 }

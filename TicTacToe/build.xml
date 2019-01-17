@@ -103,7 +103,7 @@
 	<target name="checkstyle" depends="init.report" >
 		  <cs:checkstyle config="${basedir}/checkstyle.xml" failOnViolation="false">
 		    <fileset dir="${src.dir}" includes="**/*.java"/>
-		  	<formatter type="plain" tofile="${report.dir}/checkstyle_report.xml"/>
+		  	<formatter type="xml" tofile="${report.dir}/checkstyle_report.xml"/>
 		  </cs:checkstyle>
 	</target>
 	
@@ -114,7 +114,6 @@
 			<junit printsummary="yes" haltonfailure="no" fork="yes">
 				<classpath refid="test.path" />
 				<test name="${package}.TestSuite" haltonfailure="no" todir="${report.dir}">
-					<formatter type="plain" />
 				    <formatter type="brief" usefile="false"/>
 					<formatter type="xml" />
 				</test>
@@ -132,7 +131,7 @@
 		            <fileset dir="${src.dir}"/>
 		        </sourcefiles>
 		    </structure>
-		    <html destdir="${report.dir}"/>
+		    <html destdir="${report.dir}/jacocoReport/"/>
 		</jacoco:report>
 	</target>
 
@@ -143,7 +142,6 @@
 	</target>
 
 	<target name="jenkins">
-		<antcall target="doc" />
 		<antcall target="jar" />
 		<antcall target="junit" />
 		<antcall target="checkstyle" />

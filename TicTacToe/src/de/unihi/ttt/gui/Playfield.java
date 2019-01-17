@@ -28,7 +28,7 @@ public class Playfield {
      * @param actionListener an {@link ActionListener} which will executed if any of the buttons is pressed.
      */
     Playfield(JFrame window, TurnListener actionListener) {
-    	
+    
         // Assign images
         //iconX = new ImageIcon(getClass().getResource("X.png"));
         //iconO = new ImageIcon(getClass().getResource("O.png"));
@@ -37,30 +37,30 @@ public class Playfield {
 
         // Add Buttons
         for (int i = 0; i < buttonField.length; i++) {
-        	for (int j = 0; j < buttonField[i].length; j++) {
-        		buttonField[i][j] = new JButton();
-        		window.add(buttonField[i][j]);
-        		buttonField[i][j].addActionListener(actionListener);
-        	}
+            for (int j = 0; j < buttonField[i].length; j++) {
+                buttonField[i][j] = new JButton();
+                window.add(buttonField[i][j]);
+                buttonField[i][j].addActionListener(actionListener);
+            }
         }
     }
     
     /**
-     * 
-     * @param button
-     * @return
+     * Returns the index of a button, which belongs to the Playfield.
+     * @param button belonging to the Playfield
+     * @return index of of the given button in the Playfield
      */
-    int[] getButtonIndex(JButton button) {
-    	int[] indexValues = new int[2];
-    	for (int i = 0; i < buttonField.length; i++) {
-    		for (int j = 0; j < buttonField[i].length; j++) {
-    			if (buttonField[i][j].equals(button)) {
-    				indexValues[0] = i;
-    				indexValues[1] = j;
-    			}
-    		}
-    	}
-    	return indexValues;
+     int[] getButtonIndex(JButton button) {
+        int[] indexValues = new int[2];
+        for (int i = 0; i < buttonField.length; i++) {
+            for (int j = 0; j < buttonField[i].length; j++) {
+                if (buttonField[i][j].equals(button)) {
+                    indexValues[0] = i;
+                    indexValues[1] = j;
+                }
+            }
+        }
+        return indexValues;
     }
     
     /**
@@ -68,22 +68,23 @@ public class Playfield {
      */
     void disableButtons() {
         for (int i = 0; i < buttonField.length; i++) {
-        	for (JButton field : buttonField[i]) {
-        		field.setEnabled(false);
-        	}
+            for (JButton field : buttonField[i]) {
+                field.setEnabled(false);
+            }
         }
     }
     
     
     /**
+     * Assigns the given symbol to the button at the given position.
      * @param x logical x-coordinate of the Button in the 3x3 grid
      * @param y logical y-coordinate of the Button in the 3x3 grid
      * @param symbol 
      */
     void setButtonImage(int x, int y, PlayerSymbol symbol) {
-		buttonField[x][y].setIcon(this.getImage(symbol));
-		buttonField[x][y].setDisabledIcon(this.getImage(symbol));
-		buttonField[x][y].setEnabled(false);	
+        buttonField[x][y].setIcon(this.getImage(symbol));
+        buttonField[x][y].setDisabledIcon(this.getImage(symbol));
+        buttonField[x][y].setEnabled(false);
     }
     
     /**
@@ -91,14 +92,14 @@ public class Playfield {
      * @param symbol the symbol of the wanted image
      * @return an ImageIcon belonging to a player symbol
      */
-    ImageIcon getImage(PlayerSymbol symbol) {
-    	switch (symbol) {
-    	case X:
-    		return iconX;
-    	case O:
-    		return iconO;
-    	default:
-   			return null;
-    	}
+    ImageIcon getImage(PlayerSymbol symbol) { // Checkstyle-Error test
+        switch (symbol) {
+        case X:
+            return iconX;
+        case O:
+            return iconO;
+        default:
+            return null;
+        }
     }
 }

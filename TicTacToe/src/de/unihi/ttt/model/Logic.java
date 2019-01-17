@@ -5,10 +5,13 @@ package de.unihi.ttt.model;
  * @author marcel
  */
 public class Logic {
+    private static final int ROUND_END = 9;
     private Player[][] fields = new Player[3][3];
     private int turnCounter;
-    private static final int ROUND_END = 9;
-    
+
+    /**
+     * Constructor.
+     */
     public Logic() {
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields[i].length; j++) {
@@ -16,7 +19,7 @@ public class Logic {
             }
         }
     }
-    
+
     
     /**
      * Tries to assign the current Player to the given position.
@@ -33,7 +36,7 @@ public class Logic {
         }
         return success;
     }
-    
+
     /**
      * Determines which Player should perform in the current turn.
      * @return Player, who is supposed to perform a turn
@@ -48,37 +51,35 @@ public class Logic {
         }
         return returnValue;
     }
-    
-    
+
     /**
      * Checks if game has been won by a player.
      * @return Outcome of the current game (WIN or DRAW), NOTHING, if game is still ongoing.
      */
     public Outcome checkOutcome() {
         Outcome outcomeValue;
-        
         int index = 0;
         boolean win = false;
         while (!win && index < 3) {
-            
+
             win = fields[index][0] != Player.NOBODY
-                    && fields[index][0].equals(fields[index][1])
-                    && fields[index][1].equals(fields[index][2]);
+                && fields[index][0].equals(fields[index][1])
+                && fields[index][1].equals(fields[index][2]);
             win = win
-                    || (fields[0][index] != Player.NOBODY 
-                    && fields[0][index].equals(fields[1][index]) 
-                    && fields[1][index].equals(fields[2][index]));
+                || (fields[0][index] != Player.NOBODY 
+                && fields[0][index].equals(fields[1][index]) 
+                && fields[1][index].equals(fields[2][index]));
             index++;
         }
         win = win
-                || (fields[0][0] != Player.NOBODY
-                && fields[0][0].equals(fields[1][1]) 
-                && fields[1][1].equals(fields[2][2]));
+               || (fields[0][0] != Player.NOBODY
+               && fields[0][0].equals(fields[1][1]) 
+               && fields[1][1].equals(fields[2][2]));
         win = win
                 || (fields[0][2] != Player.NOBODY
                 && fields[0][2].equals(fields[1][1]) 
                 && fields[1][1].equals(fields[2][0]));
-                
+
         if (win) {
             outcomeValue = Outcome.WIN;
         } else if (turnCounter == ROUND_END) {
@@ -88,7 +89,7 @@ public class Logic {
         }
         return outcomeValue;
     }
-    
+
     /**
      * Testing purposes. 
      * @return 2D Player array which represents the game field.
