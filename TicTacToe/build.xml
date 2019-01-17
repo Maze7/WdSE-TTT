@@ -61,7 +61,7 @@
 	
 	<!-- Kompilierung -->
 	<target name="compile.src" depends="init">
-		<javac destdir="${bin.dir}">
+		<javac destdir="${bin.dir}" debug="true">
 			<src path="${src.dir}" />
 		</javac>
 	</target>
@@ -69,7 +69,7 @@
 	<!-- Test Kompilierung -->
 	<target name="compile.test" depends="compile.src">
 		<mkdir dir="${test.build.dir}" />
-		<javac srcdir="${test.src.dir}" destdir="${test.build.dir}">
+		<javac srcdir="${test.src.dir}" destdir="${test.build.dir}" debug="true">
 			<classpath refid="test.path" />
 		</javac>
 	</target>
