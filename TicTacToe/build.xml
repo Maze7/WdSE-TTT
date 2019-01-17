@@ -28,8 +28,9 @@
 		<pathelement path="${test.src.dir}" />
 		<pathelement path="${test.build.dir}" />
 		<pathelement path="${bin.dir}" />
+		<pathelement location="${user.home}/.ant/lib/org.hamcrest.core.jar"/>
 	</path>
-
+	
 	<!-- load checkstye -->
 	<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" />
 
