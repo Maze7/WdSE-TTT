@@ -126,6 +126,7 @@
 		    <structure name="Tic Tac Toe">
 		        <classfiles>
 		            <fileset dir="${bin.dir}"/>
+		        	<fileset dir="${test.build.dir}" />
 		        </classfiles>
 		        <sourcefiles encoding="UTF-8">
 		            <fileset dir="${src.dir}"/>
