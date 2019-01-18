@@ -130,18 +130,22 @@
 		    <html destdir="${report.dir}/jacocoReport/"/>
 		</jacoco:report>
 	</target>
-
+	
+	<!-- Download jars into ant home -->
+    <target name="download.depends" description="Download required jars">
+    	<get src="https://projects.sse.uni-hildesheim.de/tools/ant-lib.zip" dest="ant-lib.zip" />
+    	<mkdir dir="${user.home}/.ant/lib" />
+		<unzip src="ant-lib.zip" dest="${user.home}/.ant/lib/" />
+    	<delete file="ant-lib.zip" />
+    </target>
+	
 	<!-- Summary of all important -->
 	<target name="all" description="compile and creates a jar file">
-		<antcall target="junit" />
+		<antcall target="clean" />
 		<antcall target="jar" />
 	</target>
 
-	<target name="jenkins">
-		<antcall target="jar" />
-		<antcall target="junit" />
-		<antcall target="checkstyle" />
-	</target>
+	<target name="jenkins" depends="jar,junit,checkstyle" />
 </project>
 
 
